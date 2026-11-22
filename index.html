@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>课本 Lehrbuch</title>
+<style>
+:root{
+  --ink:#1C1B19; --soft:#5E5B55; --faint:#98948C;
+  --paper:#FCFBF8; --desk:#EEECE6; --rule:#D9D5CB;
+  --der:#2457A6; --die:#B8322B; --das:#2E7D4F;
+  --accent:#B8322B; --mark:#F3E3A6;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --serif:Georgia,"Times New Roman","Songti SC","Noto Serif CJK SC",serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--desk);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.top{position:sticky;top:0;z-index:20;background:var(--desk);border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 16px}
+.brand{font-weight:700;font-size:15px;letter-spacing:.02em}
+.brand em{font-style:normal;color:var(--accent)}
+.brand .ver{font-weight:400;font-size:10px;color:var(--faint);margin-left:4px}
+.nav{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
+.nav a{padding:5px 10px;font-size:13px;color:var(--soft);text-decoration:none;border:1px solid transparent;border-radius:3px}
+.nav a.on{background:var(--paper);border-color:var(--rule);color:var(--ink)}
+main{max-width:860px;margin:0 auto;padding:18px 14px 60px}
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:16px;margin-bottom:14px}
+h2{font-size:17px;margin:0 0 10px}
+h3{font-size:15px;margin:0 0 8px}
+.muted{color:var(--faint);font-size:13px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:7px 13px;font-size:14px}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.small{padding:3px 8px;font-size:12.5px}
+.btn:disabled{opacity:.5;cursor:default}
+input[type=text],input[type=password],select,textarea{background:#fff;border:1px solid var(--rule);border-radius:3px;padding:7px 9px;width:100%}
+label.f{display:block;font-size:13px;color:var(--soft);margin:10px 0 4px}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.thumb{position:relative;width:92px;height:120px;border:1px solid var(--rule);border-radius:3px;overflow:hidden;background:#fff}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb button{position:absolute;top:2px;right:2px;border:none;background:rgba(0,0,0,.6);color:#fff;border-radius:50%;width:22px;height:22px;font-size:13px;line-height:1}
+.status{margin-top:10px;font-size:13px;color:var(--soft)}
+.err{color:var(--accent)}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);margin:0 0 14px;overflow-x:auto}
+.tabs button{background:none;border:none;border-bottom:2px solid transparent;padding:8px 14px;font-size:14px;color:var(--soft);white-space:nowrap}
+.tabs button.on{border-bottom-color:var(--ink);color:var(--ink);font-weight:600}
+.word{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:11px 0;border-bottom:1px solid var(--rule)}
+.word:last-child{border-bottom:none}
+.w-head{font-family:var(--serif);font-size:18px}
+.w-head .art{font-size:14px;font-weight:600;margin-right:4px}
+.g-der{color:var(--der)} .g-die{color:var(--die)} .g-das{color:var(--das)}
+.w-meta{font-size:12.5px;color:var(--faint)}
+.w-zh{font-size:14.5px}
+.w-ex{font-size:13.5px;color:var(--soft);margin-top:3px}
+.w-ex i{font-style:normal;font-family:var(--serif);color:var(--ink)}
+.w-act{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.icon{background:none;border:1px solid var(--rule);border-radius:3px;width:32px;height:28px;font-size:14px;padding:0}
+.icon.on{background:var(--mark);border-color:#d8c27a}
+.say{background:none;border:none;padding:0 2px;font-size:13px;opacity:.7}
+.gram{padding:12px 0;border-bottom:1px solid var(--rule)}
+.gram:last-child{border-bottom:none}
+.rule{background:#F6F3EA;border-left:3px solid var(--ink);padding:7px 10px;margin:6px 0 10px}
+table.t{border-collapse:collapse;margin:6px 0 10px;font-size:13.5px;width:auto;max-width:100%;display:block;overflow-x:auto}
+table.t th,table.t td{border:1px solid var(--rule);padding:4px 9px;text-align:left;white-space:nowrap}
+table.t th{background:#F6F3EA}
+.src{font-family:var(--serif);margin:4px 0}
+mark{background:var(--mark);padding:0 2px}
+.ex{margin:3px 0;font-size:14px}
+.ex .de{font-family:var(--serif)}
+.ex .zh{color:var(--soft);font-size:13px}
+.errbox{font-size:13.5px;color:#7a2a24;background:#FBEDEA;padding:6px 10px;border-radius:3px;margin-top:8px}
+.item{padding:10px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:1fr auto;gap:6px}
+.item:last-child{border-bottom:none}
+.de-big{font-family:var(--serif);font-size:16px}
+.tpl{font-size:13px;color:var(--soft);margin-top:2px}
+.tpl b{font-weight:600;color:var(--ink)}
+.cmp{font-size:14px}
+.cmp .book{color:var(--faint);text-decoration:line-through;font-family:var(--serif)}
+.cmp .spk{font-family:var(--serif);font-size:16px}
+.sub{font-size:13px;color:var(--soft);font-weight:600;margin:16px 0 6px;letter-spacing:.03em}
+.dlg-line{display:grid;grid-template-columns:30px 1fr auto;gap:8px;padding:8px 0;border-bottom:1px dashed var(--rule)}
+.dlg-line .who{font-weight:700;font-size:13px;padding-top:2px}
+.dlg-line.A .who{color:var(--der)} .dlg-line.B .who{color:var(--die)}
+.dlg-line .de{font-family:var(--serif);font-size:15.5px}
+.dlg-line .zh{font-size:13px;color:var(--soft)}
+.hidden-de{color:var(--faint);font-style:italic;cursor:pointer}
+.lib-book{margin-bottom:8px}
+.lib-lesson{padding:6px 0 6px 10px;border-left:2px solid var(--rule);margin:6px 0}
+.lib-page{display:flex;gap:10px;align-items:center;padding:6px 0;cursor:pointer}
+.lib-page img{width:44px;height:58px;object-fit:cover;border:1px solid var(--rule);border-radius:2px}
+.pill{display:inline-block;font-size:11.5px;padding:1px 7px;border:1px solid var(--rule);border-radius:10px;color:var(--soft);margin-right:4px}
+.textbox{white-space:pre-wrap;font-family:var(--serif);font-size:15px;background:#fff;border:1px solid var(--rule);border-radius:3px;padding:10px;max-height:340px;overflow:auto}
+details summary{cursor:pointer;color:var(--soft);font-size:13px;margin:6px 0}
+@media (max-width:560px){ main{padding:12px 10px 60px} .card{padding:13px} }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand">课本 <em>Lehrbuch</em><span class="ver">v1.8</span></div>
+  <nav class="nav">
+    <a href="#learn" data-v="learn">学习</a>
+    <a href="#review" data-v="review">复习</a>
+    <a href="#library" data-v="library">书架</a>
+    <a href="#kb" data-v="kb">资料库</a>
+    <a href="#settings" data-v="settings">设置</a>
+  </nav>
+</div>
+<main id="app"></main>
+
+<script>
+"use strict";
+/* ============ 基础工具 ============ */
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+const VERSION = "v1.8";
+
+/* ============ 设置 ============ */
+const DEFAULTS = { key:"", model:"claude-sonnet-5-5", level:"A2", rate:"0.9", voice:"" };
+function loadSettings(){ try{ return Object.assign({}, DEFAULTS, JSON.parse(localStorage.getItem("lb_settings")||"{}")); }catch(e){ return Object.assign({}, DEFAULTS); } }
+function saveSettings(s){ localStorage.setItem("lb_settings", JSON.stringify(s)); }
+let S = loadSettings();
+
+/* ============ IndexedDB ============ */
+const DB = {
+  _db:null,
+  open(){
+    if(this._db) return Promise.resolve(this._db);
+    return new Promise((res, rej) => {
+      const r = indexedDB.open("lehrbuch", 2);
+      r.onupgradeneeded = () => {
+        const d = r.result;
+        if(!d.objectStoreNames.contains("pages")) d.createObjectStore("pages", {keyPath:"id"});
+        if(!d.objectStoreNames.contains("saved")) d.createObjectStore("saved", {keyPath:"id"});
+        if(!d.objectStoreNames.contains("review")) d.createObjectStore("review", {keyPath:"id"});
+      };
+      r.onsuccess = () => { this._db = r.result; res(this._db); };
+      r.onerror = () => rej(r.error);
+    });
+  },
+  async tx(store, mode, fn){
+    const d = await this.open();
+    return new Promise((res, rej) => {
+      const t = d.transaction(store, mode), st = t.objectStore(store);
+      const out = fn(st);
+      t.oncomplete = () => res(out && out.result !== undefined ? out.result : out);
+      t.onerror = () => rej(t.error);
+    });
+  },
+  put(store, v){ return this.tx(store, "readwrite", st => st.put(v)); },
+  get(store, id){ return this.tx(store, "readonly", st => st.get(id)); },
+  del(store, id){ return this.tx(store, "readwrite", st => st.delete(id)); },
+  all(store){ return this.tx(store, "readonly", st => st.getAll()); }
+};
+
+/* ============ 发音 ============ */
+let VOICES = [];
+function loadVoices(){
+  if(!("speechSynthesis" in window)) return;
+  VOICES = speechSynthesis.getVoices().filter(v => /^de/i.test(v.lang));
+}
+if("speechSynthesis" in window){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+function speak(text){
+  if(!("speechSynthesis" in window) || !text) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "de-DE";
+  const v = VOICES.find(v => v.name === S.voice) || VOICES.find(v => /de-DE/i.test(v.lang)) || VOICES[0];
+  if(v) u.voice = v;
+  u.rate = parseFloat(S.rate) || 0.9;
+  speechSynthesis.speak(u);
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-say]");
+  if(b){ e.preventDefault(); speak(b.getAttribute("data-say")); }
+});
+
+/* ============ 图片压缩 ============ */
+/* 依次尝试三种读法：createImageBitmap → FileReader(data:) → blob: URL。
+   有些环境（如嵌入式预览）禁止 blob: 图片，单靠一种会失败。 */
+function drawToJpeg(src, w0, h0, maxSide, quality){
+  const k = Math.min(1, maxSide / Math.max(w0, h0));
+  const w = Math.round(w0*k), h = Math.round(h0*k);
+  const c = document.createElement("canvas");
+  c.width = w; c.height = h;
+  c.getContext("2d").drawImage(src, 0, 0, w, h);
+  return c.toDataURL("image/jpeg", quality);
+}
+function loadImg(src){
+  return new Promise((res, rej) => { const img = new Image(); img.onload = () => res(img); img.onerror = () => rej(new Error("img")); img.src = src; });
+}
+function readAsDataURL(file){
+  return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(r.error); r.readAsDataURL(file); });
+}
+async function compressImage(file, maxSide=1600, quality=0.85){
+  if(window.createImageBitmap){
+    try{ const bmp = await createImageBitmap(file); const out = drawToJpeg(bmp, bmp.width, bmp.height, maxSide, quality); bmp.close && bmp.close(); return out; }catch(e){}
+  }
+  try{ const img = await loadImg(await readAsDataURL(file)); return drawToJpeg(img, img.naturalWidth, img.naturalHeight, maxSide, quality); }catch(e){}
+  const url = URL.createObjectURL(file);
+  try{ const img = await loadImg(url); return drawToJpeg(img, img.naturalWidth, img.naturalHeight, maxSide, quality); }
+  catch(e){
+    const heic = /heic|heif/i.test(file.type) || /\.hei[cf]$/i.test(file.name);
+    throw new Error(heic ? "这是 HEIC 格式，这个浏览器读不了，换成截图或 JPG 再试。" : "图片读取失败：「" + file.name + "」。如果你是在 Claude 的预览窗口里打开的，请部署到 GitHub Pages 后再用。");
+  }
+  finally{ URL.revokeObjectURL(url); }
+}
+
+/* ============ 提示词 ============ */
+function mainPrompt(level, knownWords, knownGrammar){
+  knownWords = knownWords||[]; knownGrammar = knownGrammar||[];
+  return `你是给中文母语者讲解德语教材的老师。学习者水平：${level}。用户发来德语教材页面的照片。
+严格按下面格式输出纯文本。不要 markdown 代码块，不要 JSON，不要任何格式之外的开场白或结尾。
+每段以单独一行 ===段名=== 开头。字段用 | 分隔，字段内容里不要出现 | 符号。
+
+===META===
+TOPIC|本页主题（中文，12字以内）
+
+===TEXT===
+照片里德语正文的原样转写，保留分段。练习题的空格用 ___ 表示。页码、页眉可省略。
+
+===SEEN===
+从下面「已讲过的词」里，找出在本页出现了的词（包括它们的变形，如复数、变位、过去式），一行写完，用英文逗号分隔，照抄列表里的原形写法。没有就写 -。
+
+===WORDS===
+每行一个词：原形|词性|冠词|复数|变化|中文释义|例句德语|例句中文
+- 词性只能是 n / v / adj / adv / prep / conj / pron / phr / other 之一
+- 冠词：名词写 der/die/das，非名词写 -
+- 复数：名词写复数形式（如 die Häuser），无复数写 -，非名词写 -
+- 变化：动词写 第三人称单数现在时, 过去式, 完成时（如 fährt, fuhr, ist gefahren）；可分动词原形里用 · 标出前缀（如 an·rufen）；反身动词原形带 sich；需要固定格或介词的写出来（如 + Akk.、an + Akk.）；形容词只在比较级不规则时写；其他写 -
+- 例句优先用课本原句
+- 挑出对这个水平有学习价值的词，最多 30 个，按课本出现顺序
+- 「已讲过的词」不要再写进 WORDS。唯一例外：本页用的是它的另一个意思或新的固定搭配，这时写进 WORDS，中文释义以【新用法】开头，只讲新的意思
+
+===GRAMMAR===
+本页涉及的每个语法点写一块，每块以 ## 语法点名称（中文，可带德语术语）开头，下面逐行：
+RULE|一两句话说清规则（中文）
+TABLE|表头1|表头2|...      （可选：需要变化表时写，第一行表头）
+ROW|单元格|单元格|...        （表格每一行一条）
+SRC|课本里体现这个语法的原句，用 [[ ]] 括出关键部分
+EX|新例句德语|中文           （写 2 到 3 条）
+ERR|中国学习者常见错误及纠正（中文）
+如果某个语法点在「已讲过的语法」里，不要重讲：只写 ## 语法点名称（复习），下面写一行 REF|对应的那一条（一字不差照抄「已讲过的语法」里的写法），再写 SRC 行（至少一条）。
+
+===PHRASES===
+好词好句、固定搭配，每行：德语|中文|可替换句型模板（用 … 表示可替换的部分，没有就写 -）|例句1德语|例句1中文|例句2德语|例句2中文
+写 5 到 12 条，优先能直接用在日常生活里的。
+每一条都必须带满两条例句，不能省略：例句要是课本以外的新句子，贴近在德国的日常生活（租房、工作、看医生、购物、和朋友聊天等），长度适中，体现这个搭配的典型用法。
+
+已讲过的词：${knownWords.length ? knownWords.join(", ") : "（无）"}
+
+已讲过的语法：${knownGrammar.length ? knownGrammar.join("；") : "（无）"}`;
+}
+
+/* ============ API ============ */
+/* 流式调用：每收到一段文字就调 onText(累计文本)。返回 {text, usage:{input_tokens, output_tokens}, truncated} */
+async function callClaude(content, maxTokens, onText){
+  if(!S.key) throw new Error("还没填 API Key，去「设置」里填。");
+  const r = await fetch("https://api.anthropic.com/v1/messages", {
+    method:"POST",
+    headers:{
+      "content-type":"application/json",
+      "x-api-key":S.key,
+      "anthropic-version":"2023-06-01",
+      "anthropic-dangerous-direct-browser-access":"true"
+    },
+    body: JSON.stringify({ model:S.model, max_tokens:maxTokens, stream:true, messages:[{role:"user", content}] })
+  });
+  if(!r.ok){
+    const data = await r.json().catch(() => ({}));
+    throw new Error("API 报错 " + r.status + "：" + ((data.error && data.error.message) || "未知错误"));
+  }
+  const usage = { input_tokens:0, output_tokens:0 };
+  let text = "", stop = "", buf = "";
+  const handle = ev => {
+    if(ev.type === "message_start" && ev.message && ev.message.usage){
+      const u = ev.message.usage;
+      usage.input_tokens = (u.input_tokens||0) + (u.cache_creation_input_tokens||0) + (u.cache_read_input_tokens||0);
+      usage.output_tokens = u.output_tokens||0;
+    }else if(ev.type === "content_block_delta" && ev.delta && ev.delta.type === "text_delta"){
+      text += ev.delta.text; if(onText) onText(text);
+    }else if(ev.type === "message_delta"){
+      if(ev.usage && ev.usage.output_tokens != null) usage.output_tokens = ev.usage.output_tokens;
+      if(ev.delta && ev.delta.stop_reason) stop = ev.delta.stop_reason;
+    }else if(ev.type === "error"){
+      throw new Error("生成中断：" + ((ev.error && ev.error.message) || "未知错误"));
+    }
+  };
+  const reader = r.body.getReader(), dec = new TextDecoder();
+  for(;;){
+    const { value, done } = await reader.read();
+    if(done) break;
+    buf += dec.decode(value, { stream:true });
+    let i;
+    while((i = buf.indexOf("\n")) >= 0){
+      const line = buf.slice(0, i).trim(); buf = buf.slice(i+1);
+      if(!line.startsWith("data:")) continue;
+      let ev; try{ ev = JSON.parse(line.slice(5)); }catch(e){ continue; }
+      handle(ev);
+    }
+  }
+  addUsage(usage);
+  return { text, usage, truncated: stop === "max_tokens" };
+}
+
+/* 累计用量（存在 localStorage，按月份分） */
+function loadUsage(){ try{ return JSON.parse(localStorage.getItem("lb_usage")||"{}"); }catch(e){ return {}; } }
+function addUsage(u){
+  const all = loadUsage(), m = new Date().toISOString().slice(0,7);
+  const cur = all[m] || { input:0, output:0, calls:0 };
+  cur.input += u.input_tokens||0; cur.output += u.output_tokens||0; cur.calls += 1;
+  all[m] = cur; localStorage.setItem("lb_usage", JSON.stringify(all));
+}
+const fmtTok = n => n >= 10000 ? (n/1000).toFixed(1) + "k" : String(n||0);
+
+/* ============ 解析 ============ */
+function splitSections(raw){
+  const out = {};
+  let cur = null;
+  String(raw||"").replace(/\r/g,"").split("\n").forEach(line => {
+    const m = line.match(/^\s*===\s*([A-Z]+)\s*===\s*$/);
+    if(m){ cur = m[1]; out[cur] = []; return; }
+    if(cur) out[cur].push(line);
+  });
+  return out;
+}
+const cells = line => line.split("|").map(s => s.trim());
+const dash = s => (!s || s === "-" || s === "—") ? "" : s;
+
+function parseResult(raw){
+  const sec = splitSections(raw);
+  const res = { topic:"", text:"", seen:[], words:[], grammar:[], phrases:[], spoken:[] };
+  res.seen = [...new Set((sec.SEEN||[]).join(",").split(/[,，、\n]/).map(x => x.trim()).filter(x => x && x !== "-" && x !== "—"))];
+  (sec.META||[]).forEach(l => { const c = cells(l); if(c[0]==="TOPIC") res.topic = c[1]||""; });
+  res.text = (sec.TEXT||[]).join("\n").trim();
+  (sec.WORDS||[]).forEach(l => {
+    if(!l.includes("|")) return;
+    const c = cells(l); if(c.length < 6 || !c[0]) return;
+    res.words.push({ lemma:c[0], pos:(c[1]||"").toLowerCase(), art:dash(c[2]).toLowerCase(), plural:dash(c[3]), forms:dash(c[4]), zh:c[5]||"", ex:dash(c[6]), exZh:dash(c[7]) });
+  });
+  let g = null;
+  (sec.GRAMMAR||[]).forEach(l => {
+    const t = l.trim(); if(!t) return;
+    if(t.startsWith("##")){ g = { title:t.replace(/^#+\s*/,""), rule:"", table:[], src:[], ex:[], err:"", ref:"" }; res.grammar.push(g); return; }
+    if(!g){ g = { title:"语法", rule:"", table:[], src:[], ex:[], err:"" }; res.grammar.push(g); }
+    const c = cells(t), k = c[0].toUpperCase();
+    if(k==="RULE") g.rule = c.slice(1).join(" | ");
+    else if(k==="TABLE" || k==="ROW") g.table.push({ head:k==="TABLE", cells:c.slice(1) });
+    else if(k==="SRC") g.src.push(c.slice(1).join(" | "));
+    else if(k==="EX") g.ex.push({ de:c[1]||"", zh:c[2]||"" });
+    else if(k==="ERR") g.err = c.slice(1).join(" | ");
+    else if(k==="REF") g.ref = c.slice(1).join(" | ");
+  });
+  (sec.PHRASES||[]).forEach(l => { if(!l.includes("|")) return; const c = cells(l); if(!c[0]) return; const ex = []; for(let i = 3; i < c.length; i += 2){ if(dash(c[i])) ex.push({ de:c[i], zh:c[i+1]||"" }); } res.phrases.push({ de:c[0], zh:c[1]||"", tpl:dash(c[2]), ex }); });
+  (sec.SPOKEN||[]).forEach(l => { if(!l.includes("|")) return; const c = cells(l); if(c[0]) res.spoken.push({ book:c[0], spk:c[1]||"", note:c[2]||"" }); });
+  return res;
+}
+function parseDialog(raw){
+  const d = { title:"", titleDe:"", roleA:"A", roleB:"B", lines:[], vocab:[] };
+  String(raw||"").replace(/\r/g,"").split("\n").forEach(l => {
+    const t = l.trim(); if(!t.includes("|")) return;
+    const c = cells(t), k = c[0].toUpperCase();
+    if(k==="TITLE"){ d.title = c[1]||""; d.titleDe = c[2]||""; }
+    else if(k==="ROLE"){ d.roleA = c[1]||"A"; d.roleB = c[2]||"B"; }
+    else if(k==="A" || k==="B") d.lines.push({ who:k, de:c[1]||"", zh:c[2]||"" });
+    else if(k==="VOCAB") d.vocab.push({ de:c[1]||"", zh:c[2]||"" });
+  });
+  return d;
+}
+
+/* ============ 收藏 ============ */
+let SAVED = new Map();
+async function loadSaved(){ SAVED = new Map((await DB.all("saved")).map(x => [x.id, x])); }
+const savedId = (kind, de) => kind + ":" + de.toLowerCase();
+async function toggleSave(kind, de, data, page){
+  const id = savedId(kind, de);
+  if(SAVED.has(id)){ await DB.del("saved", id); SAVED.delete(id); return false; }
+  const rec = { id, kind, de, data, book:page?page.book:"", lesson:page?page.lesson:"", pageId:page?page.id:"", created:Date.now() };
+  await DB.put("saved", rec); SAVED.set(id, rec); return true;
+}
+
+/* ============ 渲染片段 ============ */
+const sayBtn = text => `<button class="say" data-say="${esc(text)}" title="朗读">🔊</button>`;
+const POS = { n:"名词", v:"动词", adj:"形容词", adv:"副词", prep:"介词", conj:"连词", pron:"代词", phr:"短语", other:"" };
+function wordSpeech(w){ return w.art ? w.art + " " + w.lemma : w.lemma.replace(/·/g,""); }
+function wordHTML(w, idx, opts={}){
+  const gcls = w.art ? "g-" + w.art : "";
+  const meta = [POS[w.pos]||w.pos, w.plural ? "复数 " + w.plural : "", w.forms].filter(Boolean).join(" · ");
+  const on = SAVED.has(savedId("word", w.lemma));
+  return `<div class="word">
+    <div>
+      <div class="w-head ${gcls}">${w.art?`<span class="art">${esc(w.art)}</span>`:""}${esc(w.lemma)} ${sayBtn(wordSpeech(w))}</div>
+      ${meta?`<div class="w-meta">${esc(meta)}</div>`:""}
+      <div class="w-zh">${/^【新用法】/.test(w.zh) ? `<span class="pill" style="color:var(--accent);border-color:var(--accent)">新用法</span>` + esc(w.zh.replace(/^【新用法】\s*/,"")) : esc(w.zh)}</div>
+      ${w.ex?`<div class="w-ex"><i>${esc(w.ex)}</i> ${sayBtn(w.ex)}<br>${esc(w.exZh)}</div>`:""}
+      ${opts.src?`<div class="muted">${esc(opts.src)}</div>`:""}
+    </div>
+    <div class="w-act">${opts.noSave?"":`<button class="icon ${on?"on":""}" data-save-word="${idx}" title="收藏">${on?"★":"☆"}</button>`}${opts.del?`<button class="icon" data-del="${esc(opts.del)}" title="删除">✕</button>`:""}</div>
+  </div>`;
+}
+const markSrc = s => esc(s).replace(/\[\[(.+?)\]\]/g, "<mark>$1</mark>");
+const plainSrc = s => s.replace(/\[\[|\]\]/g, "");
+function grammarHTML(g, gi){
+  if(/复习/.test(g.title) && gi !== undefined){
+    const hit = findKnownGram(g, gi), open = openGram.has(gi);
+    return `<div class="gram">
+      <h3>${esc(normGram(g.title))} <span class="pill">复习</span></h3>
+      ${g.src.map(s => `<div class="src">📖 ${markSrc(s)} ${sayBtn(plainSrc(s))}</div>`).join("")}
+      ${hit ? `<button class="btn small" data-gram-open="${gi}" style="margin-top:6px">${open ? "收起之前的讲解 ▲" : "展开之前的讲解 ▼"}</button>
+        ${open ? `<div style="margin-top:8px;padding:2px 12px;border-left:2px solid var(--rule)"><div class="muted">首次讲解：${esc([hit.book, hit.lesson, hit.topic].filter(Boolean).join(" · "))}</div>${grammarHTML(hit.g)}</div>` : ""}`
+        : (PAGE_KNOWN.gramMap && PAGE_KNOWN.gramMap.size
+            ? `<div class="muted" style="margin-top:6px">没自动对上之前的讲解，选一下是哪一个（选一次会记住）：</div>
+               <div class="row" style="gap:6px;margin-top:4px">${[...PAGE_KNOWN.gramMap.keys()].map(k => `<button class="btn small" data-gram-link="${gi}" data-k="${esc(k)}">${esc(k)}</button>`).join("")}</div>`
+            : `<div class="muted">之前的页里没有讲过语法。</div>`)}
+    </div>`;
+  }
+  let tbl = "";
+  if(g.table.length){
+    tbl = `<table class="t">` + g.table.map(r => "<tr>" + r.cells.map(c => r.head ? `<th>${esc(c)}</th>` : `<td>${esc(c)}</td>`).join("") + "</tr>").join("") + `</table>`;
+  }
+  return `<div class="gram">
+    <h3>${/复习/.test(g.title) ? esc(normGram(g.title)) + ` <span class="pill">复习</span>` : esc(g.title)}</h3>
+    ${g.rule?`<div class="rule">${esc(g.rule)}</div>`:""}
+    ${tbl}
+    ${g.src.map(s => `<div class="src">📖 ${markSrc(s)} ${sayBtn(plainSrc(s))}</div>`).join("")}
+    ${g.ex.length?`<div class="sub">例句</div>`+g.ex.map(e => `<div class="ex"><span class="de">${esc(e.de)}</span> ${sayBtn(e.de)}<div class="zh">${esc(e.zh)}</div></div>`).join(""):""}
+    ${g.err?`<div class="errbox">⚠ ${esc(g.err)}</div>`:""}
+  </div>`;
+}
+function tplHTML(t){ return esc(t).replace(/…/g, "<b>…</b>"); }
+function phraseHTML(p, idx, opts={}){
+  const on = SAVED.has(savedId("phrase", p.de));
+  return `<div class="item">
+    <div><div class="de-big">${esc(p.de)} ${sayBtn(p.de)}</div><div>${esc(p.zh)}</div>${p.tpl?`<div class="tpl">句型：${tplHTML(p.tpl)}</div>`:""}${(p.ex||[]).map(e => `<div class="ex" style="margin-left:10px"><span class="de">${esc(e.de)}</span> ${sayBtn(e.de)}<div class="zh">${esc(e.zh)}</div></div>`).join("")}${opts.src?`<div class="muted">${esc(opts.src)}</div>`:""}</div>
+    <div class="w-act">${opts.noSave?"":`<button class="icon ${on?"on":""}" data-save-phrase="${idx}">${on?"★":"☆"}</button>`}${opts.del?`<button class="icon" data-del="${esc(opts.del)}">✕</button>`:""}</div>
+  </div>`;
+}
+function spokenHTML(s, idx){
+  const on = SAVED.has(savedId("spoken", s.spk));
+  return `<div class="item">
+    <div class="cmp"><div class="book">${esc(s.book)}</div><div class="spk">→ ${esc(s.spk)} ${sayBtn(s.spk)}</div><div class="muted">${esc(s.note)}</div></div>
+    <div class="w-act"><button class="icon ${on?"on":""}" data-save-spoken="${idx}">${on?"★":"☆"}</button></div>
+  </div>`;
+}
+
+/* ============ 视图 ============ */
+const app = $("#app");
+let pending = [];   // 待上传的图片 dataURL
+let curPage = null, curParsed = null, curTab = "words", practiceSet = new Set(), detailsOpen = false;
+let PAGE_KNOWN = { words:new Map(), grammar:[], gramMap:new Map() }, openSeen = new Set(), openGram = new Set();
+/* 找之前讲过的同一个语法点：手动指定 → REF 精确 → 名称精确 → 相似度最高的那个 */
+function gramTokens(x){
+  x = normGram(x).toLowerCase();
+  const t = new Set((x.match(/[a-zäöüß]{4,}/g) || []).map(w => w.slice(0, 6)));
+  const zh = x.replace(/[^一-鿿]/g, "");
+  for(let i = 0; i < zh.length - 1; i++) t.add(zh.slice(i, i+2));
+  return t;
+}
+function findKnownGram(g, gi){
+  const m = PAGE_KNOWN.gramMap; if(!m || !m.size) return null;
+  const link = curPage && curPage.gramLinks && curPage.gramLinks[gi];
+  if(link && m.has(link)) return m.get(link);
+  for(const c of [g.ref, g.title]){ const t = normGram(c); if(t && m.has(t)) return m.get(t); }
+  let best = null, bestScore = 0;
+  for(const c of [g.ref, g.title].filter(Boolean)){
+    const A = gramTokens(c); if(!A.size) continue;
+    for(const [k, v] of m){
+      const B = gramTokens(k); if(!B.size) continue;
+      let n = 0; A.forEach(x => { if(B.has(x)) n++; });
+      const sc = n / Math.min(A.size, B.size);
+      if(sc > bestScore){ bestScore = sc; best = v; }
+    }
+  }
+  return bestScore >= 0.34 ? best : null;
+}
+
+/* 已讲过的词和语法：来自其他所有页（不含当前页）。同一个词保留最早出现的那次。
+   before：只算这个时间之前的页（看旧页时，复习词指向更早的讲解） */
+const normLemma = s => String(s||"").toLowerCase().replace(/·/g,"").replace(/^sich\s+/,"").replace(/^(der|die|das)\s+/,"").trim();
+const normGram = s => String(s||"").replace(/[（(]\s*复习\s*[)）]/g,"").trim();
+async function buildKnown(excludeId, before){
+  const pages = (await DB.all("pages")).filter(p => p.id !== excludeId && (!before || p.created < before)).sort((a,b) => a.created - b.created);
+  const words = new Map(), gram = new Set(), gramMap = new Map();
+  pages.forEach(p => {
+    const r = parseResult(p.raw);
+    r.words.forEach(w => { if(/^【新用法】/.test(w.zh)) return; const k = normLemma(w.lemma); if(k && !words.has(k)) words.set(k, { w, book:p.book, lesson:p.lesson, pageId:p.id, topic:r.topic }); });
+    r.grammar.forEach(g => { const t = normGram(g.title); if(t && !/复习/.test(g.title)){ gram.add(t); if(!gramMap.has(t)) gramMap.set(t, { g, book:p.book, lesson:p.lesson, topic:r.topic }); } });
+  });
+  return { words, grammar:[...gram], gramMap };
+}
+function seenHTML(seen){
+  if(!seen || !seen.length) return "";
+  return `<div style="padding:4px 0 10px;border-bottom:1px solid var(--rule)"><div class="sub" style="margin-top:0">本页复习词（以前讲过，点开回顾）</div>
+    <div class="row" style="gap:6px">${seen.map(l => { const k = normLemma(l), hit = PAGE_KNOWN.words.get(k);
+      const cls = hit && hit.w.art ? "g-" + hit.w.art : "";
+      return `<button class="btn small ${openSeen.has(k)?"on":""}" data-seen="${esc(k)}" style="${openSeen.has(k)?"background:var(--mark)":""}"><span class="${cls}">${esc(hit && hit.w.art ? hit.w.art + " " : "")}${esc(l)}</span></button>`; }).join("")}</div>
+    ${seen.map(l => { const k = normLemma(l), hit = PAGE_KNOWN.words.get(k); if(!openSeen.has(k)) return "";
+      return hit ? wordHTML(hit.w, 0, { noSave:true, src:"首次出现：" + [hit.book, hit.lesson, hit.topic].filter(Boolean).join(" · ") }) : `<div class="muted" style="padding:6px 0">${esc(l)}：讲解所在的页已删除或在这页之后。</div>`; }).join("")}
+  </div>`;
+}
+
+function setNav(v){ document.querySelectorAll(".nav a").forEach(a => a.classList.toggle("on", a.dataset.v === v)); }
+
+async function bookOptions(){
+  const pages = await DB.all("pages");
+  const books = [...new Set(pages.map(p => p.book).filter(Boolean))];
+  return { books, lastBook: localStorage.getItem("lb_lastBook")||"", lastLesson: localStorage.getItem("lb_lastLesson")||"" };
+}
+
+async function viewLearn(){
+  setNav("learn");
+  const o = await bookOptions();
+  app.innerHTML = `<div class="card">
+    <h2>拍一页课本</h2>
+    <div class="row">
+      <label class="btn primary">📷 拍照<input id="camIn" type="file" accept="image/*" capture="environment" hidden></label>
+      <label class="btn">🖼 从相册选<input id="fileIn" type="file" accept="image/*" multiple hidden></label>
+    </div>
+    <div class="muted" style="margin-top:6px">一次可以放 1～3 页，同一课的连在一起讲效果更好。</div>
+    <div class="thumbs" id="thumbs"></div>
+    <div class="row" style="gap:10px">
+      <div style="flex:2;min-width:160px"><label class="f">教材</label><input id="bookIn" type="text" list="bookList" placeholder="例如 Menschen A2" value="${esc(o.lastBook)}">
+        <datalist id="bookList">${o.books.map(b => `<option value="${esc(b)}">`).join("")}</datalist></div>
+      <div style="flex:1;min-width:100px"><label class="f">第几课</label><input id="lessonIn" type="text" placeholder="例如 L5" value="${esc(o.lastLesson)}"></div>
+    </div>
+    <div class="row" style="margin-top:14px"><button class="btn primary" id="goBtn" disabled>开始讲解</button><span class="muted">水平 ${esc(S.level)} · ${esc(S.model)}</span></div>
+    <div class="status" id="status"></div>
+  </div>`;
+  renderThumbs();
+  const onFiles = async files => {
+    for(const f of files){
+      if(pending.length >= 3){ setStatus("最多 3 页。", true); break; }
+      try{ pending.push(await compressImage(f)); }catch(e){ setStatus(e.message, true); }
+    }
+    renderThumbs();
+  };
+  $("#camIn").onchange = e => { onFiles([...e.target.files]); e.target.value = ""; };
+  $("#fileIn").onchange = e => { onFiles([...e.target.files]); e.target.value = ""; };
+  $("#goBtn").onclick = runExplain;
+}
+function renderThumbs(){
+  const box = $("#thumbs"); if(!box) return;
+  box.innerHTML = pending.map((u,i) => `<div class="thumb"><img src="${u}"><button data-rm="${i}">×</button></div>`).join("");
+  box.querySelectorAll("[data-rm]").forEach(b => b.onclick = () => { pending.splice(+b.dataset.rm, 1); renderThumbs(); });
+  $("#goBtn").disabled = !pending.length;
+}
+function setStatus(msg, isErr){ const s = $("#status"); if(s){ s.innerHTML = msg; s.classList.toggle("err", !!isErr); } }
+
+async function runExplain(){
+  const book = $("#bookIn").value.trim(), lesson = $("#lessonIn").value.trim();
+  localStorage.setItem("lb_lastBook", book); localStorage.setItem("lb_lastLesson", lesson);
+  const images = pending.slice();
+  const page = { id:uid(), book, lesson, created:Date.now(), images, raw:"", topic:"", dialogs:[], dialogUsage:[], usage:null, truncated:false, live:true, t0:Date.now() };
+  LIVE.set(page.id, page);
+  pending = [];
+  location.hash = "#page/" + page.id;
+
+  let last = 0, timer = null;
+  const refresh = () => { if(curPage === page){ curParsed = parseResult(livePart(page.raw)); renderPage(); } };
+  const tick = setInterval(() => { if(curPage === page){ const s = $("#liveStatus"); if(s) s.textContent = liveLabel(page); } }, 1000);
+  try{
+    const content = images.map(u => ({ type:"image", source:{ type:"base64", media_type:"image/jpeg", data:u.split(",")[1] } }));
+    const known = await buildKnown(page.id);
+    content.push({ type:"text", text: mainPrompt(S.level, [...known.words.values()].map(k => k.w.lemma), known.grammar) });
+    const r = await callClaude(content, 12000, txt => {
+      page.raw = txt;
+      const now = Date.now();
+      if(now - last > 400){ last = now; refresh(); }
+      else if(!timer){ timer = setTimeout(() => { timer = null; last = Date.now(); refresh(); }, 400); }
+    });
+    clearTimeout(timer); clearInterval(tick);
+    const parsed = parseResult(r.text);
+    if(!parsed.words.length && !parsed.grammar.length && !parsed.text) throw new Error("返回内容没解析出来。原始返回开头：" + r.text.slice(0,300));
+    Object.assign(page, { raw:r.text, topic:parsed.topic, usage:r.usage, truncated:r.truncated, live:false });
+    delete page.t0; delete page.error;
+    await DB.put("pages", page);
+    LIVE.delete(page.id);
+    if(curPage === page){ curParsed = parsed; renderPage(); }
+  }catch(e){
+    clearTimeout(timer); clearInterval(tick);
+    page.live = false; page.error = e.message || String(e);
+    if(page.raw){ page.truncated = true; const p = parseResult(page.raw); page.topic = p.topic; await DB.put("pages", page); LIVE.delete(page.id); }
+    if(curPage === page){ curParsed = parseResult(page.raw); renderPage(); }
+  }
+}
+const LIVE = new Map();   // 正在生成的页面
+const livePart = raw => raw.slice(0, raw.lastIndexOf("\n") + 1);   // 只解析已写完整的行
+function liveLabel(p){
+  const sec = (p.raw.match(/===\s*([A-Z]+)\s*===/g) || []).pop() || "";
+  const name = { "META":"开始", "TEXT":"转写课文", "SEEN":"找复习词", "WORDS":"写单词", "GRAMMAR":"写语法", "PHRASES":"写好词好句", "SPOKEN":"写口语" }[sec.replace(/[=\s]/g,"")] || "读图";
+  return "生成中 · " + name + " · " + Math.round((Date.now() - p.t0)/1000) + " 秒";
+}
+
+async function viewPage(id){
+  setNav("");
+  const page = LIVE.get(id) || await DB.get("pages", id);
+  if(!page){ app.innerHTML = `<div class="card">没找到这一页。</div>`; return; }
+  PAGE_KNOWN = await buildKnown(page.id, page.created);
+  curPage = page; curParsed = mergeEx(parseResult(page.live ? livePart(page.raw) : page.raw), page);
+  renderPage();
+}
+function renderPage(){
+  const p = curPage, r = curParsed;
+  const tabs = [["words","单词 "+r.words.length+(r.seen.length?" +"+r.seen.length+" 复习":"")],["grammar","语法 "+r.grammar.length],["phrases","好词好句 "+r.phrases.length]];
+  if(curTab === "dialog") curTab = "phrases";
+  if(curTab === "spoken") curTab = "phrases";
+  const missingEx = !p.live && r.phrases.some(x => !(x.ex||[]).length);
+  const job = EXJOB.get(p.id);
+  if(missingEx && !job) setTimeout(() => fillExamples(p), 0);   // 自动补，不用点
+  let body = "";
+  if(curTab === "words") body = seenHTML(r.seen) + (r.words.length ? r.words.map((w,i) => wordHTML(w,i)).join("") : `<div class="muted">${r.seen.length?"这页没有新词。":"没有单词。"}</div>`);
+  else if(curTab === "grammar") body = r.grammar.length ? r.grammar.map((g,i) => grammarHTML(g,i)).join("") : `<div class="muted">这页没识别出语法点。</div>`;
+  else body = `${missingEx ? (job && job.state === "failed"
+      ? `<div class="errbox" style="margin:0 0 8px">补例句失败：${esc(job.err)} <button class="btn small" id="exRetry">重试</button></div>`
+      : `<div class="muted" style="margin-bottom:8px">正在给下面几条补例句…</div>`) : ""}
+    ${r.phrases.length ? r.phrases.map((x,i) => phraseHTML(x,i)).join("") : `<div class="muted">${p.live?"还没写到…":"没有。"}</div>`}`;
+  const u = p.usage, du = (p.dialogUsage||[]);
+  const tokIn = (u?u.input_tokens:0) + du.reduce((a,x) => a + (x.input_tokens||0), 0);
+  const tokOut = (u?u.output_tokens:0) + du.reduce((a,x) => a + (x.output_tokens||0), 0);
+  app.innerHTML = `<div class="card">
+    <div class="row" style="justify-content:space-between">
+      <div><h2 style="margin:0">${esc(r.topic || (p.live ? "讲解中…" : "未命名"))}</h2><div class="muted">${esc(p.book||"未分类")} ${esc(p.lesson||"")} · ${new Date(p.created).toLocaleDateString()}${u?` · 用量 输入 ${fmtTok(tokIn)} / 输出 ${fmtTok(tokOut)} tokens`:""}</div></div>
+      ${p.live?`<span class="pill" id="liveStatus">${esc(liveLabel(p))}</span>`:`<button class="btn small" id="delPage">删除这页</button>`}
+    </div>
+    ${p.error?`<div class="errbox">${esc(p.error)}${p.raw?"（已生成的部分保留了）":""} <button class="btn small" id="retryBtn">重新讲解</button></div>`:""}
+    ${p.truncated && !p.error?`<div class="errbox">回答被截断了（内容太多），最后一部分可能缺失。可以少放几页重新讲。</div>`:""}
+    <details ${detailsOpen?"open":""} id="srcDetails"><summary>看原图和课文</summary>
+      <div class="thumbs">${(p.images||[]).map(u => `<div class="thumb"><a href="${u}" target="_blank"><img src="${u}"></a></div>`).join("")}</div>
+      ${r.text?`<div class="textbox">${esc(r.text)}</div><div style="margin-top:6px">${sayBtn(r.text)} <span class="muted">朗读全文</span></div>`:""}
+    </details>
+  </div>
+  <div class="card">
+    <div class="tabs">${tabs.map(([k,l]) => `<button data-tab="${k}" class="${curTab===k?"on":""}">${l}</button>`).join("")}</div>
+    <div id="tabBody">${body}</div>
+  </div>`;
+  app.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => { curTab = b.dataset.tab; renderPage(); });
+  app.querySelectorAll("[data-gram-link]").forEach(b => b.onclick = async () => {
+    const gi = +b.dataset.gramLink; curPage.gramLinks = Object.assign({}, curPage.gramLinks, { [gi]: b.dataset.k });
+    openGram.add(gi); if(!curPage.live) await DB.put("pages", curPage); renderPage();
+  });
+  app.querySelectorAll("[data-gram-open]").forEach(b => b.onclick = () => { const i = +b.dataset.gramOpen; openGram.has(i) ? openGram.delete(i) : openGram.add(i); renderPage(); });
+  app.querySelectorAll("[data-seen]").forEach(b => b.onclick = () => { const k = b.dataset.seen; openSeen.has(k) ? openSeen.delete(k) : openSeen.add(k); renderPage(); });
+  app.querySelectorAll("[data-save-word]").forEach(b => b.onclick = async () => { const w = r.words[+b.dataset.saveWord]; await toggleSave("word", w.lemma, w, p); renderPage(); });
+  app.querySelectorAll("[data-save-phrase]").forEach(b => b.onclick = async () => { const x = r.phrases[+b.dataset.savePhrase]; await toggleSave("phrase", x.de, x, p); renderPage(); });
+  app.querySelectorAll("[data-save-spoken]").forEach(b => b.onclick = async () => { const x = r.spoken[+b.dataset.saveSpoken]; await toggleSave("spoken", x.spk, x, p); renderPage(); });
+  app.querySelectorAll("[data-reveal]").forEach(el => el.onclick = () => { el.style.display = "none"; el.nextElementSibling.style.display = "block"; });
+  const del = $("#delPage"); if(del) del.onclick = async () => { if(confirm("删除这一页的讲解和照片？收藏的词会保留。")){ await DB.del("pages", p.id); location.hash = "#library"; } };
+  const rt = $("#retryBtn"); if(rt) rt.onclick = async () => { pending = (p.images||[]).slice(); LIVE.delete(p.id); if(p.raw) await DB.del("pages", p.id); location.hash = "#learn"; };
+  const sd = $("#srcDetails"); if(sd) sd.ontoggle = () => { detailsOpen = sd.open; };
+  const er = $("#exRetry"); if(er) er.onclick = () => { EXJOB.delete(p.id); fillExamples(p); };
+}
+
+async function viewLibrary(){
+  setNav("library");
+  const pages = (await DB.all("pages")).sort((a,b) => b.created - a.created);
+  if(!pages.length){ app.innerHTML = `<div class="card"><h2>书架</h2><div class="muted">还没有内容。去「学习」拍第一页。</div></div>`; return; }
+  const tree = {};
+  pages.forEach(p => { const b = p.book||"未分类", l = p.lesson||"—"; (tree[b] = tree[b]||{}); (tree[b][l] = tree[b][l]||[]).push(p); });
+  app.innerHTML = `<div class="card"><h2>书架</h2>${Object.keys(tree).map(b => `
+    <details class="lib-book" open><summary><b style="color:var(--ink);font-size:15px">${esc(b)}</b> <span class="pill">${Object.values(tree[b]).flat().length} 页</span></summary>
+    ${Object.keys(tree[b]).sort((x,y) => x.localeCompare(y, undefined, {numeric:true})).map(l => `<div class="lib-lesson"><div class="muted">${esc(l)}</div>
+      ${tree[b][l].map(p => { const r = parseResult(p.raw); return `<div class="lib-page" data-open="${p.id}">${p.images&&p.images[0]?`<img src="${p.images[0]}">`:""}<div><div>${esc(p.topic||"未命名")}</div><div class="muted">${r.words.length} 词 · ${r.grammar.length} 语法 · ${new Date(p.created).toLocaleDateString()}</div></div></div>`; }).join("")}
+    </div>`).join("")}</details>`).join("")}</div>`;
+  app.querySelectorAll("[data-open]").forEach(el => el.onclick = () => location.hash = "#page/" + el.dataset.open);
+}
+
+/* 旧页面的好词好句补例句：例句另存在 page.phraseEx，显示时合并 */
+function mergeEx(r, p){
+  const m = p && p.phraseEx; if(!m) return r;
+  r.phrases.forEach(x => { if(!(x.ex||[]).length && m[x.de]) x.ex = m[x.de]; });
+  return r;
+}
+const EXJOB = new Map();   // pageId → {state:"running"|"failed", err}
+async function fillExamples(p){
+  const todo = mergeEx(parseResult(p.raw), p).phrases.filter(x => !(x.ex||[]).length);
+  if(!todo.length || (EXJOB.get(p.id) || {}).state === "running") return;
+  EXJOB.set(p.id, { state:"running" });
+  if(curPage === p) renderPage();
+  const prompt = `给下面每个德语好词好句写两条例句。学习者水平：${S.level}。例句要贴近在德国的日常生活，体现这个搭配的典型用法。
+严格按格式输出纯文本，每行一条，不要其他内容，字段用 | 分隔，内容里不要出现 |：
+原词句（照抄）|例句1德语|例句1中文|例句2德语|例句2中文
+
+${todo.map(x => x.de + "（" + x.zh + "）").join("\n")}`;
+  let r = null, err = null;
+  for(let attempt = 0; attempt < 2 && !r; attempt++){   // 失败自动再试一次
+    try{ r = await callClaude([{ type:"text", text:prompt }], 3000); }
+    catch(e){ err = e; if(attempt === 0) await new Promise(res => setTimeout(res, 2000)); }
+  }
+  if(!r){ EXJOB.set(p.id, { state:"failed", err:(err && err.message) || "未知错误" }); if(curPage === p) renderPage(); return; }
+  const map = Object.assign({}, p.phraseEx);
+  r.text.split("\n").forEach(l => {
+    const c = cells(l); if(c.length < 3) return;
+    const key = todo.find(x => fold(x.de) === fold(c[0].replace(/（.*$/,""))); if(!key) return;
+    const ex = []; for(let i = 1; i < c.length; i += 2){ if(dash(c[i])) ex.push({ de:c[i], zh:c[i+1]||"" }); }
+    if(ex.length) map[key.de] = ex;
+  });
+  p.phraseEx = map;
+  p.dialogUsage = (p.dialogUsage||[]).concat([r.usage]);
+  await DB.put("pages", p);
+  EXJOB.set(p.id, { state:"done" });
+  if(curPage === p){ curParsed = mergeEx(parseResult(p.raw), p); renderPage(); }
+}
+
+/* ============ 资料库：跨所有页的单词 / 语法 / 好词好句 / 口语，可搜索 ============ */
+let KB = { tab:"gram", q:"", book:"", star:false, open:new Set() };
+const fold = x => String(x||"").toLowerCase().replace(/ä/g,"a").replace(/ö/g,"o").replace(/ü/g,"u").replace(/ß/g,"ss").replace(/·/g,"");
+async function buildKB(){
+  const pages = (await DB.all("pages")).sort((a,b) => a.created - b.created);
+  const words = new Map(), gram = new Map(), phrases = new Map(), spoken = new Map();
+  pages.forEach(p => {
+    const r = mergeEx(parseResult(p.raw), p), src = { book:p.book, lesson:p.lesson, topic:r.topic, pageId:p.id };
+    r.words.forEach(w => { const k = normLemma(w.lemma) + (/^【新用法】/.test(w.zh) ? "|" + w.zh : ""); if(!words.has(k)) words.set(k, { w, src, more:[] }); else words.get(k).more.push(src); });
+    r.seen.forEach(l => { const e = words.get(normLemma(l)); if(e) e.more.push(src); });
+    r.grammar.forEach(g => {
+      const isRev = /复习/.test(g.title), key = normGram(isRev && g.ref ? g.ref : g.title);
+      if(!isRev && !gram.has(key)) gram.set(key, { g, src, more:[], srcSents:[] });
+      else if(gram.has(key)){ gram.get(key).more.push(src); gram.get(key).srcSents.push(...g.src); }
+    });
+    r.phrases.forEach(x => { if(!phrases.has(x.de)) phrases.set(x.de, { x, src }); });
+    r.spoken.forEach(x => { if(!spoken.has(x.spk)) spoken.set(x.spk, { x, src }); });
+  });
+  return { words:[...words.values()], gram:[...gram.values()], phrases:[...phrases.values()], spoken:[...spoken.values()] };
+}
+const srcLabel = s => [s.book || "未分类", s.lesson, s.topic].filter(Boolean).join(" · ");
+const srcLink = s => `<a href="#page/${esc(s.pageId)}" style="color:var(--soft)">${esc(srcLabel(s))}</a>`;
+function kbText(kind, e){
+  if(kind === "words"){ const w = e.w; return [w.art, w.lemma, w.plural, w.forms, w.zh, w.ex, w.exZh].join(" "); }
+  if(kind === "gram"){ const g = e.g; return [g.title, g.rule, g.err, ...g.src, ...e.srcSents, ...g.ex.map(x => x.de + " " + x.zh), ...g.table.map(r => r.cells.join(" "))].join(" "); }
+  if(kind === "phrases"){ const x = e.x; return [x.de, x.zh, x.tpl, ...(x.ex||[]).map(y => y.de + " " + y.zh)].join(" "); }
+  const x = e.x; return [x.book, x.spk, x.note].join(" ");
+}
+async function viewKB(){
+  setNav("kb");
+  await loadSaved();
+  const kb = await buildKB();
+  const books = [...new Set([...kb.words, ...kb.gram].map(e => e.src.book).filter(Boolean))];
+  const q = fold(KB.q.trim()).split(/\s+/).filter(Boolean);
+  const keep = (kind, e) => {
+    if(KB.book && e.src.book !== KB.book && !(e.more||[]).some(m => m.book === KB.book)) return false;
+    if(KB.star){
+      const id = kind === "words" ? savedId("word", e.w.lemma) : kind === "phrases" ? savedId("phrase", e.x.de) : kind === "spoken" ? savedId("spoken", e.x.spk) : null;
+      if(!id || !SAVED.has(id)) return false;
+    }
+    if(!q.length) return true;
+    const t = fold(kbText(kind, e)); return q.every(x => t.includes(x));
+  };
+  const L = { words:kb.words.filter(e => keep("words", e)), gram:kb.gram.filter(e => keep("gram", e)), phrases:kb.phrases.filter(e => keep("phrases", e)), spoken:kb.spoken.filter(e => keep("spoken", e)) };
+  const tabs = [["gram","语法"],["words","单词"],["phrases","好词好句"]];
+  if(KB.tab === "spoken") KB.tab = "gram";
+  let body = "";
+  const list = L[KB.tab];
+  if(!list.length) body = `<div class="muted" style="padding:8px 0">${q.length ? "没有搜到。" : KB.star ? "这一类还没有收藏。" : "还没有内容。"}</div>`;
+  else if(KB.tab === "gram") body = list.map((e,i) => {
+    const k = "g:" + normGram(e.g.title), open = KB.open.has(k) || (q.length && list.length <= 3);
+    return `<div class="gram" style="padding:8px 0">
+      <div class="row" style="justify-content:space-between;cursor:pointer" data-kb-open="${esc(k)}">
+        <div><b>${esc(e.g.title)}</b><div class="muted">${esc(srcLabel(e.src))}${e.more.length ? " · 之后又出现 " + e.more.length + " 次" : ""}</div></div><span class="muted">${open ? "▲" : "▼"}</span></div>
+      ${open ? `<div style="margin-top:6px">${grammarHTML(e.g)}
+        ${e.srcSents.length ? `<div class="sub">在其他课里的例子</div>` + e.srcSents.map(x => `<div class="src">📖 ${markSrc(x)} ${sayBtn(plainSrc(x))}</div>`).join("") : ""}
+        <div class="muted">首次讲解：${srcLink(e.src)}${e.more.length ? " · 也出现在：" + e.more.map(srcLink).join("、") : ""}</div></div>` : ""}
+    </div>`; }).join("");
+  else if(KB.tab === "words") body = list.map((e,i) => wordHTML(e.w, i, { src:srcLabel(e.src) + (e.more.length ? " · 之后又出现 " + e.more.length + " 次" : "") })).join("");
+  else if(KB.tab === "phrases") body = list.map((e,i) => phraseHTML(e.x, i, { src:srcLabel(e.src) })).join("");
+  else body = list.map((e,i) => spokenHTML(e.x, i).replace('<div class="muted">', `<div class="muted">${esc(srcLabel(e.src))} · `)).join("");
+  app.innerHTML = `<div class="card">
+    <h2>资料库</h2>
+    <input id="kbQ" type="text" placeholder="搜索：反身动词、Akkusativ、Wohnung、租房…（ä 可以打成 a）" value="${esc(KB.q)}">
+    <div class="row" style="margin-top:8px">
+      <select id="kbBook" style="width:auto"><option value="">全部教材</option>${books.map(b => `<option ${KB.book===b?"selected":""}>${esc(b)}</option>`).join("")}</select>
+      <label class="muted" style="display:flex;align-items:center;gap:4px"><input type="checkbox" id="kbStar" ${KB.star?"checked":""}> 只看收藏 ★</label>
+    </div>
+    <div class="tabs" style="margin-top:10px">${tabs.map(([k,l]) => `<button data-kbt="${k}" class="${KB.tab===k?"on":""}">${l} ${L[k].length}</button>`).join("")}</div>
+    <div id="kbBody">${body}</div>
+  </div>`;
+  const qi = $("#kbQ"); let t = null;
+  qi.oninput = () => { clearTimeout(t); t = setTimeout(async () => { KB.q = qi.value; const pos = qi.selectionStart; await viewKB(); const n = $("#kbQ"); n.focus(); n.setSelectionRange(pos, pos); }, 250); };
+  $("#kbBook").onchange = e => { KB.book = e.target.value; viewKB(); };
+  $("#kbStar").onchange = e => { KB.star = e.target.checked; viewKB(); };
+  app.querySelectorAll("[data-kbt]").forEach(b => b.onclick = () => { KB.tab = b.dataset.kbt; viewKB(); });
+  app.querySelectorAll("[data-kb-open]").forEach(b => b.onclick = () => { const k = b.dataset.kbOpen; KB.open.has(k) ? KB.open.delete(k) : KB.open.add(k); viewKB(); });
+  const findSrc = e => ({ id:e.src.pageId, book:e.src.book, lesson:e.src.lesson });
+  app.querySelectorAll("[data-save-word]").forEach(b => b.onclick = async () => { const e = list[+b.dataset.saveWord]; await toggleSave("word", e.w.lemma, e.w, findSrc(e)); viewKB(); });
+  app.querySelectorAll("[data-save-phrase]").forEach(b => b.onclick = async () => { const e = list[+b.dataset.savePhrase]; await toggleSave("phrase", e.x.de, e.x, findSrc(e)); viewKB(); });
+  app.querySelectorAll("[data-save-spoken]").forEach(b => b.onclick = async () => { const e = list[+b.dataset.saveSpoken]; await toggleSave("spoken", e.x.spk, e.x, findSrc(e)); viewKB(); });
+}
+
+function viewSettings(){
+  setNav("settings");
+  loadVoices();
+  app.innerHTML = `<div class="card"><h2>设置</h2>
+    <label class="f">Anthropic API Key（只存在这台设备的浏览器里）</label>
+    <input id="sKey" type="password" value="${esc(S.key)}" placeholder="sk-ant-...">
+    <label class="f">模型</label>
+    <input id="sModel" type="text" value="${esc(S.model)}">
+    <div class="muted">需要能看图的模型。想省钱可以换成 haiku 系列，讲解会简略一些。</div>
+    <label class="f">我的德语水平</label>
+    <select id="sLevel">${["A1","A2","B1","B2","C1"].map(l => `<option ${S.level===l?"selected":""}>${l}</option>`).join("")}</select>
+    <label class="f">德语语音</label>
+    <select id="sVoice"><option value="">自动</option>${VOICES.map(v => `<option ${S.voice===v.name?"selected":""} value="${esc(v.name)}">${esc(v.name)} (${esc(v.lang)})</option>`).join("")}</select>
+    ${VOICES.length?"":`<div class="muted">这个浏览器没找到德语语音。iPhone：设置 → 辅助功能 → 朗读内容 → 声音 → 德语，下载一个。</div>`}
+    <label class="f">语速 <span id="rateV">${esc(S.rate)}</span></label>
+    <input id="sRate" type="range" min="0.6" max="1.2" step="0.05" value="${esc(S.rate)}" style="width:100%">
+    <div class="row" style="margin-top:14px"><button class="btn primary" id="sSave">保存</button><button class="btn" data-say="Guten Tag! Ich lerne Deutsch.">试听</button><span class="status" id="status"></span></div>
+  </div>
+  <div class="card"><h2>用量</h2>
+    ${(() => { const us = loadUsage(), ms = Object.keys(us).sort().reverse();
+      return ms.length ? `<table class="t"><tr><th>月份</th><th>调用次数</th><th>输入 tokens</th><th>输出 tokens</th></tr>${ms.map(m => `<tr><td>${m}</td><td>${us[m].calls}</td><td>${us[m].input.toLocaleString()}</td><td>${us[m].output.toLocaleString()}</td></tr>`).join("")}</table>` : `<div class="muted">还没有调用记录。</div>`; })()}
+    <div class="muted">只统计这台设备上这个网站的调用。实际扣费以 Anthropic Console 的 Usage / Cost 页面为准；输出 token 的单价比输入贵好几倍，费用主要花在输出上。</div>
+  </div>
+  <div class="card"><h2>备份</h2>
+    <div class="muted">数据只存在这台设备的浏览器里。换手机或电脑前先导出，到新设备上导入。</div>
+    <div class="row" style="margin-top:10px"><button class="btn" id="exBtn">导出备份</button><label class="btn">导入备份<input id="imIn" type="file" accept=".json,application/json" hidden></label></div>
+  </div>
+  <div class="muted" style="text-align:center">课本 Lehrbuch ${VERSION}</div>`;
+  $("#sRate").oninput = e => { $("#rateV").textContent = e.target.value; S.rate = e.target.value; };
+  $("#sVoice").onchange = e => { S.voice = e.target.value; };
+  $("#sSave").onclick = () => {
+    S = Object.assign(S, { key:$("#sKey").value.trim(), model:$("#sModel").value.trim()||DEFAULTS.model, level:$("#sLevel").value, voice:$("#sVoice").value, rate:$("#sRate").value });
+    saveSettings(S); setStatus("已保存");
+  };
+  $("#exBtn").onclick = async () => {
+    const data = { app:"lehrbuch", version:VERSION, exported:new Date().toISOString(), pages:await DB.all("pages"), saved:await DB.all("saved"), review:await DB.all("review") };
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], {type:"application/json"}));
+    a.download = "lehrbuch-backup-" + new Date().toISOString().slice(0,10) + ".json";
+    a.click();
+  };
+  $("#imIn").onchange = async e => {
+    const f = e.target.files[0]; if(!f) return;
+    try{
+      const data = JSON.parse(await f.text());
+      if(data.app !== "lehrbuch") throw new Error("不是这个网站的备份文件");
+      for(const p of data.pages||[]) await DB.put("pages", p);
+      for(const s of data.saved||[]) await DB.put("saved", s);
+      for(const v of data.review||[]) await DB.put("review", v);
+      await loadSaved();
+      setStatus("导入完成：" + (data.pages||[]).length + " 页，" + (data.saved||[]).length + " 条收藏");
+    }catch(err){ setStatus("导入失败：" + esc(err.message), true); }
+  };
+}
+
+/* ============ 单词复习（间隔重复） ============ */
+const DAY = 86400000;
+const INTERVALS = [1, 2, 4, 7, 14, 30, 60, 120];   // 第 n 档对应的间隔天数
+const startOfDay = t => { const d = new Date(t); d.setHours(0,0,0,0); return d.getTime(); };
+/* 卡片 = 所有页讲过的单词（含【新用法】，单独成卡）。没有复习记录的，从讲解第二天开始到期 */
+async function buildDeck(){
+  const pages = (await DB.all("pages")).sort((a,b) => a.created - b.created);
+  const recs = new Map((await DB.all("review")).map(x => [x.id, x]));
+  const deck = new Map();
+  pages.forEach(p => {
+    parseResult(p.raw).words.forEach(w => {
+      const isNew = /^【新用法】/.test(w.zh);
+      const id = normLemma(w.lemma) + (isNew ? "|" + w.zh : "");
+      if(!id || deck.has(id)) return;
+      const rec = recs.get(id);
+      deck.set(id, { id, w, book:p.book, lesson:p.lesson, rec, due: rec ? rec.due : startOfDay(p.created) + DAY });
+    });
+  });
+  return [...deck.values()];
+}
+let RV = { queue:[], i:0, shown:false, book:"", done:0 };
+async function viewReview(){
+  setNav("review");
+  const deck = await buildDeck();
+  const books = [...new Set(deck.map(c => c.book).filter(Boolean))];
+  const pool = RV.book ? deck.filter(c => c.book === RV.book) : deck;
+  const today = startOfDay(Date.now()), endToday = today + DAY;
+  const due = pool.filter(c => c.due < endToday).sort((a,b) => a.due - b.due);
+  const week = [...Array(7)].map((_, d) => pool.filter(c => c.due >= today + d*DAY && c.due < today + (d+1)*DAY).length);
+  week[0] = due.length;
+  const days = ["今天","明天"].concat([2,3,4,5,6].map(d => ["周日","周一","周二","周三","周四","周五","周六"][new Date(today + d*DAY).getDay()]));
+  const max = Math.max(1, ...week);
+  app.innerHTML = `<div class="card">
+    <div class="row" style="justify-content:space-between"><h2 style="margin:0">单词复习</h2>
+      <select id="rvBook" style="width:auto"><option value="">全部教材</option>${books.map(b => `<option ${RV.book===b?"selected":""}>${esc(b)}</option>`).join("")}</select></div>
+    <div class="muted" style="margin:6px 0 12px">共 ${pool.length} 个词 · 今天到期 ${due.length} 个（其中没复习过的 ${due.filter(c => !c.rec).length} 个）</div>
+    <div style="display:flex;gap:6px;align-items:flex-end;height:90px;margin-bottom:4px">${week.map((n,d) => `<div style="flex:1;text-align:center;font-size:11.5px;color:var(--soft)"><div>${n||""}</div><div style="height:${Math.round(56*n/max)}px;background:${d===0?"var(--ink)":"var(--rule)"};border-radius:2px 2px 0 0"></div></div>`).join("")}</div>
+    <div style="display:flex;gap:6px">${days.map(x => `<div style="flex:1;text-align:center;font-size:11.5px;color:var(--faint)">${x}</div>`).join("")}</div>
+    <div class="row" style="margin-top:14px"><button class="btn primary" id="rvStart" ${due.length?"":"disabled"}>${due.length ? "开始复习（" + Math.min(due.length, 40) + " 个）" : "今天没有要复习的"}</button>
+    ${due.length > 40 ? `<span class="muted">一次最多 40 个，复习完可以再开一轮</span>` : ""}</div>
+  </div>
+  <div class="muted" style="text-align:center">记得 → 下次间隔变长（1、2、4、7、14、30… 天）；模糊 → 间隔不变；忘了 → 明天再来</div>`;
+  $("#rvBook").onchange = e => { RV.book = e.target.value; viewReview(); };
+  $("#rvStart").onclick = () => { RV = { queue:due.slice(0, 40), i:0, shown:false, book:RV.book, done:0 }; renderCard(); };
+}
+function renderCard(){
+  const c = RV.queue[RV.i];
+  if(!c){
+    app.innerHTML = `<div class="card" style="text-align:center"><h2>这一轮完成 🎉</h2><div class="muted">复习了 ${RV.done} 个词</div>
+      <div class="row" style="justify-content:center;margin-top:12px"><button class="btn primary" id="rvBack">回到复习首页</button></div></div>`;
+    $("#rvBack").onclick = () => viewReview(); return;
+  }
+  const w = c.w, noun = !!w.art, isNewUse = /^【新用法】/.test(w.zh);
+  const front = w.lemma;
+  app.innerHTML = `<div class="muted" style="margin-bottom:6px">${RV.i+1} / ${RV.queue.length}${c.rec ? "" : " · 第一次复习"}</div>
+  <div class="card" style="text-align:center;padding:28px 16px">
+    <div class="w-head" style="font-size:28px">${noun ? (RV.shown ? `<span class="art g-${w.art}" style="font-size:22px">${esc(w.art)}</span> ` : `<span class="muted" style="font-size:22px">der / die / das ?</span> `) : ""}<span class="${RV.shown && noun ? "g-" + w.art : ""}">${esc(front)}</span> ${sayBtn(RV.shown ? wordSpeech(w) : w.lemma.replace(/·/g,""))}</div>
+    ${isNewUse ? `<div style="margin-top:4px"><span class="pill" style="color:var(--accent);border-color:var(--accent)">新用法</span></div>` : ""}
+    ${RV.shown ? `<div style="text-align:left;margin-top:16px;border-top:1px solid var(--rule)">${wordHTML(w, 0, { noSave:true, src:[c.book, c.lesson].filter(Boolean).join(" ") })}</div>`
+      : `<div class="muted" style="margin-top:14px">${noun ? "想一想：词性、复数、意思" : "想一想：意思、变化"}</div>`}
+  </div>
+  <div class="row" style="justify-content:center;gap:10px">
+    ${RV.shown ? `<button class="btn" data-grade="0" style="min-width:86px">忘了 <span class="muted">1</span></button>
+      <button class="btn" data-grade="1" style="min-width:86px">模糊 <span class="muted">2</span></button>
+      <button class="btn primary" data-grade="2" style="min-width:86px">记得 <span class="muted">3</span></button>`
+      : `<button class="btn primary" id="rvShow" style="min-width:160px">显示答案 <span style="opacity:.6">空格</span></button>`}
+  </div>
+  <div class="row" style="justify-content:center;margin-top:16px"><button class="btn small" id="rvQuit">结束这一轮</button></div>`;
+  const s = $("#rvShow"); if(s) s.onclick = () => { RV.shown = true; renderCard(); };
+  app.querySelectorAll("[data-grade]").forEach(b => b.onclick = () => grade(+b.dataset.grade));
+  $("#rvQuit").onclick = () => viewReview();
+}
+async function grade(g){
+  const c = RV.queue[RV.i]; if(!c) return;
+  const box0 = c.rec ? c.rec.box : 0;
+  const box = g === 0 ? 0 : g === 1 ? box0 : Math.min(box0 + 1, INTERVALS.length - 1);
+  const days = g === 0 ? 1 : INTERVALS[box];
+  const rec = { id:c.id, box, due: startOfDay(Date.now()) + days*DAY, last:Date.now(), reps:(c.rec ? c.rec.reps : 0) + 1, lapses:(c.rec ? c.rec.lapses : 0) + (g === 0 ? 1 : 0) };
+  await DB.put("review", rec);
+  c.rec = rec; RV.i++; RV.shown = false; RV.done++;
+  renderCard();
+}
+document.addEventListener("keydown", e => {
+  if(location.hash !== "#review" || !RV.queue[RV.i] || /input|select|textarea/i.test(e.target.tagName)) return;
+  if(!RV.shown && (e.key === " " || e.key === "Enter")){ e.preventDefault(); RV.shown = true; renderCard(); }
+  else if(RV.shown && ["1","2","3"].includes(e.key)){ e.preventDefault(); grade(+e.key - 1); }
+});
+
+/* ============ 路由 ============ */
+async function route(){
+  const h = location.hash.replace(/^#/, "") || "learn";
+  if(h.startsWith("page/")){ if(!curPage || curPage.id !== h.slice(5)){ curTab = "words"; practiceSet = new Set(); detailsOpen = false; openSeen = new Set(); openGram = new Set(); } return viewPage(h.slice(5)); }
+  curPage = null;
+  if(h === "library") return viewLibrary();
+  if(h === "review") return viewReview();
+  if(h === "kb" || h === "vocab") return viewKB();
+  if(h === "settings") return viewSettings();
+  return viewLearn();
+}
+window.addEventListener("hashchange", route);
+(async () => {
+  try{ await loadSaved(); }catch(e){ console.error(e); }
+  if(!S.key && !location.hash) location.hash = "#settings";
+  route();
+})();
+
+/* 供测试用 */
+if(typeof window !== "undefined") window.__lb = { parseResult, parseDialog, splitSections };
+</script>
+</body>
+</html>
